@@ -160,7 +160,10 @@ for layer in trainer.model.children():
     #if isinstance(layer, nn.Linear):
     print(layer.state_dict())
 
-print('\n\n RESULTS INFERENCES \n\n')
-sequences = ['hello', 'its me']
-tokenized = tokenizer(sequences, padding=True, return_tensors="pt")
-print(trainer.model(**tokenized))
+
+
+trainer.push_to_hub('tmp',  token=HF_TOKEN_WRITE)
+# print('\n\n RESULTS INFERENCES \n\n')
+# sequences = ['hello', 'its me']
+# tokenized = tokenizer(sequences, padding=True, return_tensors="pt")
+# print(trainer.model(**tokenized))
