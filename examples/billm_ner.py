@@ -67,8 +67,8 @@ model = MODEL.from_pretrained(
     id2label=id2label, 
     label2id=label2id,
     token = HF_TOKEN_READ,
-    load_in_4bit = True
-)#.bfloat16()
+    # load_in_4bit = True
+).bfloat16()
 peft_config = LoraConfig(task_type=TaskType.TOKEN_CLS,
                          inference_mode=False,
                          r=args.lora_r, lora_alpha=args.lora_alpha, lora_dropout=args.lora_dropout)
