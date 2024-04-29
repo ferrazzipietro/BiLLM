@@ -129,7 +129,7 @@ training_args = TrainingArguments(
     learning_rate=args.learning_rate,
     per_device_train_batch_size=2,# args.batch_size,
     per_device_eval_batch_size=2,# args.batch_size,
-    num_train_epochs=args.epochs,
+    num_train_epochs=2#args.epochs,
     weight_decay=args.weight_decay,
     evaluation_strategy="epoch",
     save_strategy="epoch",
@@ -152,3 +152,15 @@ trainer.train()
 # push the best model to the hub
 if args.push_to_hub:
     trainer.push_to_hub()
+
+
+
+from torch import nn
+for layer in trainer.model.children():
+    #if isinstance(layer, nn.Linear):
+    print(layer.state_dict())
+
+print('\n\n RESULTS INFERENCES \n\n')
+sequences = ['hello', 'its me']
+tokenized = tokenizer(sequences, padding=True, return_tensors="pt")
+print(trainer.model(**tokenized))
