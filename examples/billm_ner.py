@@ -11,6 +11,12 @@ from transformers import TrainingArguments, Trainer
 from peft import get_peft_model, LoraConfig, TaskType
 from billm import LlamaForTokenClassification, MistralForTokenClassification
 
+from dotenv import dotenv_values
+
+WANDB_KEY = dotenv_values(".env.base")['WANDB_KEY']
+LLAMA_TOKEN = dotenv_values(".env.base")['LLAMA_TOKEN']
+HF_TOKEN_READ = dotenv_values(".env.base")['HF_TOKEN_READ']
+HF_TOKEN_WRITE = dotenv_values(".env.base")['HF_TOKEN_WRITE']
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--model_name_or_path', type=str, default='NousResearch/Llama-2-7b-hf',
@@ -54,9 +60,15 @@ elif 'llama' in args.model_name_or_path.lower():
     MODEL = LlamaForTokenClassification
 else:
     raise NotImplementedError
+
 model = MODEL.from_pretrained(
-    args.model_name_or_path, num_labels=len(label2id), id2label=id2label, label2id=label2id
-).bfloat16()
+    args.model_name_or_path, 
+    num_labels=len(label2id), 
+    id2label=id2label, 
+    label2id=label2id,
+    token = HF_TOKEN_READ,
+    load_in_4bit = True
+)#.bfloat16()
 peft_config = LoraConfig(task_type=TaskType.TOKEN_CLS,
                          inference_mode=False,
                          r=args.lora_r, lora_alpha=args.lora_alpha, lora_dropout=args.lora_dropout)
