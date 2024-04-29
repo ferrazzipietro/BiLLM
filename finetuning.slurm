@@ -42,6 +42,6 @@ which python
 export 'PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:256'
 
 python --version
-python  examples/billm_ner.py # train_ls_llama.py
+python  WANDB_MODE=disabled BiLLM_START_INDEX=0 python examples/billm_ner.py --model_name_or_path mistralai/Mistral-7B-v0.1 --dataset_name_or_path conll2003 --push_to_hub 0# train_ls_llama.py
 echo -n 'Date: '
 date
